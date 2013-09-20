@@ -29,9 +29,9 @@ byte circle[8]={
   B00000,
   B00000,
 };
-
-float OldResult[3]={1,1,1};
-float Result[3]={0};//store new result that is after convert
+//
+int OldResult[3]={1,1,1};//store old result that is after convert
+int Result[3]={0};//store new result that is after convert
 int chr[40]={0};//store result that is before convert
 LiquidCrystal lcd(Rs,Rw,En,D4,D5,D6,D7);//define lcd
 
@@ -55,7 +55,7 @@ void loop(){
   }else{
     //if reading is correct and the number is changed, print new number.
     //Otherwise, no change
-    if(OldResult!=Result){
+    if(OldResult[0]!=Result[0] || OldResult[1]!=Result[1]){
       lcd.clear();
       lcd.setCursor(0,0);
       lcd.print("Humi : ");
@@ -130,10 +130,7 @@ void Measure(int Pin){
     Result[0]=chr[0]*128+chr[1]*64+chr[2]*32+chr[3]*16+chr[4]*8+chr[5]*4+chr[6]*2+chr[7];
     Result[1]=chr[16]*128+chr[17]*64+chr[18]*32+chr[19]*16+chr[20]*8+chr[21]*4+chr[22]*2+chr[23];
     Result[2]=chr[32]*128+chr[33]*64+chr[34]*32+chr[35]*16+chr[36]*8+chr[37]*4+chr[38]*2+chr[39];
-    if(Result[2]==Result[0]+Result[1]){
-      Result[0]=round((chr[0]*128+chr[1]*64+chr[2]*32+chr[3]*16+chr[4]*8+chr[5]*4+chr[6]*2+chr[7]+chr[8]/2.00+chr[9]/4.00+chr[10]/8.00+chr[11]/16.00+chr[12]/32.00+chr[13]/64.00+chr[14]/128.00+chr[15]/256.00)*100)/100.00;
-      Result[1]=round((chr[16]*128+chr[17]*64+chr[18]*32+chr[19]*16+chr[20]*8+chr[21]*4+chr[22]*2+chr[23]+chr[24]/2.00+chr[25]/4.00+chr[26]/8.00+chr[27]/16.00+chr[28]/32.00+chr[29]/64.00+chr[30]/128.00+chr[31]/256.00)*100)/100.00;
-    }else{
+    if(Result[2]!=Result[0]+Result[1]){
       Result[0]=1;
       Result[1]=0;
       Result[2]=1;
